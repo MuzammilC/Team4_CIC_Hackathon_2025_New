@@ -68,17 +68,21 @@ export class BootScene extends Phaser.Scene {
 
   create() {
     // Add full-screen background to ensure no gaps
-    this.add.rectangle(640, 360, 1280, 720, 0x2c3e50);
+    this.add.rectangle(640, 360, 1280, 720, 0x050669);
     
     // Display game title and intro
-    const title = this.add.text(640, 200, 'Career Quest', {
-      font: 'bold 64px monospace',
-      color: '#ecf0f1'
-    }).setOrigin(0.5);
+    const title = this.add.text(640, 200, 'CAREER QUEST', {
+      fontFamily: '"Pixelify Sans"',
+      fontSize: '150px',
+      fontStyle: 'bold',
+      color: '#ecf0f1',
+      stroke: '#00808E',
+  strokeThickness: 10
+    }).setOrigin(0.5);    
 
-    this.add.text(640, 280, 'AI-Powered Tech Career Exploration', {
+    this.add.text(640, 330, 'AI-Powered Tech Career Exploration', {
       font: '24px monospace',
-      color: '#bdc3c7'
+      color: '#ffffffff'
     }).setOrigin(0.5);
 
     this.add.rectangle(640, 400, 200, 50, 0x3498db)
@@ -103,4 +107,5 @@ export class BootScene extends Phaser.Scene {
       ease: 'Sine.easeInOut'
     });
   }
+  
 }
