@@ -67,6 +67,9 @@ export class BootScene extends Phaser.Scene {
   }
 
   create() {
+    // Add full-screen background to ensure no gaps
+    this.add.rectangle(640, 360, 1280, 720, 0x2c3e50);
+    
     // Display game title and intro
     const title = this.add.text(640, 200, 'Career Quest', {
       font: 'bold 64px monospace',

@@ -27,7 +27,7 @@ export class WorldMapScene extends Phaser.Scene {
     // Add title with better styling
     this.add.text(640, 80, 'Choose Your Career Path', {
       font: 'bold 36px monospace',
-      color: '#2c3e50',
+      color: '#f6f6f6',
       stroke: '#ffffff',
       strokeThickness: 2
     }).setOrigin(0.5);
@@ -100,8 +100,8 @@ export class WorldMapScene extends Phaser.Scene {
     // Data Science Building (left) - use asset if available
     let dataScienceBuilding: Phaser.GameObjects.GameObject;
     if (this.textures.exists('datascience-building')) {
-      dataScienceBuilding = this.add.image(300, 340, 'datascience-building');
-      (dataScienceBuilding as Phaser.GameObjects.Image).setScale(0.45); // Reduced size
+      dataScienceBuilding = this.add.image(260, 360, 'datascience-building');
+      (dataScienceBuilding as Phaser.GameObjects.Image).setScale(0.5); // Reduced size
     } else {
       dataScienceBuilding = this.createDataScienceBuilding(300, 340);
     }
@@ -111,25 +111,25 @@ export class WorldMapScene extends Phaser.Scene {
     dataScienceBuilding.setData('worldType', 'datascience');
 
     // Position text properly above the building
-    this.add.text(300, 220, 'Data Science/ML', {
+    this.add.text(260, 195, 'Data Science/ML', {
       font: 'bold 18px monospace',
-      color: '#2c3e50',
+      color: '#f6f6f6',
       stroke: '#ffffff',
       strokeThickness: 1
     }).setOrigin(0.5);
 
-    this.add.text(300, 245, 'Analytics • ML • AI', {
+    this.add.text(260, 220, 'Analytics • ML • AI', {
       font: '12px monospace',
-      color: '#1a5d1a'
+      color: '#f9f9f9'
     }).setOrigin(0.5);
 
     // Frontend Building (middle) - use asset if available
     let frontendBuilding: Phaser.GameObjects.GameObject;
     if (this.textures.exists('frontend-building')) {
       frontendBuilding = this.add.image(640, 340, 'frontend-building');
-      (frontendBuilding as Phaser.GameObjects.Image).setScale(0.45); // Reduced size
+      (frontendBuilding as Phaser.GameObjects.Image).setScale(0.55); // Reduced size
     } else {
-      frontendBuilding = this.createFrontendBuilding(640, 340);
+      frontendBuilding = this.createFrontendBuilding(640, 350);
     }
     
     frontendBuilding.setInteractive({ useHandCursor: true })
@@ -137,23 +137,23 @@ export class WorldMapScene extends Phaser.Scene {
     frontendBuilding.setData('worldType', 'frontend');
 
     // Position text properly above the building
-    this.add.text(640, 220, 'Frontend/UI', {
+    this.add.text(640, 155, 'Frontend/UI', {
       font: 'bold 18px monospace',
-      color: '#2c3e50',
+      color: '#f6f6f6',
       stroke: '#ffffff',
       strokeThickness: 1
     }).setOrigin(0.5);
 
-    this.add.text(640, 245, 'Design • UX • Interfaces', {
+    this.add.text(640, 180, 'Design • UX • Interfaces', {
       font: '12px monospace',
-      color: '#1a4d8a'
+      color: '#f9f9f9'
     }).setOrigin(0.5);
 
     // Backend Building (right) - use asset if available
     let backendBuilding: Phaser.GameObjects.GameObject;
     if (this.textures.exists('backend-building')) {
-      backendBuilding = this.add.image(980, 340, 'backend-building');
-      (backendBuilding as Phaser.GameObjects.Image).setScale(0.45); // Reduced size
+      backendBuilding = this.add.image(1050, 380, 'backend-building');
+      (backendBuilding as Phaser.GameObjects.Image).setScale(0.52); // Reduced size
     } else {
       backendBuilding = this.createBackendBuilding(980, 340);
     }
@@ -163,16 +163,16 @@ export class WorldMapScene extends Phaser.Scene {
     backendBuilding.setData('worldType', 'backend');
 
     // Position text properly above the building
-    this.add.text(980, 220, 'Backend Dev', {
+    this.add.text(1050, 215, 'Backend Dev', {
       font: 'bold 18px monospace',
-      color: '#2c3e50',
+      color: '#f6f6f6',
       stroke: '#ffffff',
       strokeThickness: 1
     }).setOrigin(0.5);
 
-    this.add.text(980, 245, 'APIs • Databases • Systems', {
+    this.add.text(1050, 240, 'APIs • Databases • Systems', {
       font: '12px monospace',
-      color: '#8B4513'
+      color: '#f9f9f9'
     }).setOrigin(0.5);
 
     this.worldPortals.addMultiple([dataScienceBuilding, frontendBuilding, backendBuilding]);
