@@ -17,6 +17,7 @@ export class Game extends Phaser.Game {
       height: 720,
       parent: 'root',
       backgroundColor: '#87CEEB',
+  dom: { createContainer: true },
       scale: {
         mode: Phaser.Scale.FIT,
         autoCenter: Phaser.Scale.CENTER_BOTH,

@@ -136,7 +136,7 @@ export class CareerWorldScene extends Phaser.Scene {
   }
 
   private createBackButton() {
-    const backButton = this.add.rectangle(100, 50, 120, 40, 0x95a5a6)
+    this.add.rectangle(100, 50, 120, 40, 0x95a5a6)
       .setInteractive({ useHandCursor: true })
       .on('pointerdown', () => {
         this.scene.start('WorldMapScene');
@@ -168,10 +168,13 @@ export class CareerWorldScene extends Phaser.Scene {
       this.player.update(this.cursors, this.wasdKeys);
       
       // Check for challenge station interactions
-      this.physics.overlap(this.player.sprite, this.challengeStations, (player, station) => {
-        const stationObject = station.getData('challengeStation') as ChallengeStation;
-        if (stationObject && this.input.keyboard!.checkDown(this.input.keyboard!.addKey('SPACE'), 250)) {
-          stationObject.startChallenge();
+      this.physics.overlap(this.player.sprite, this.challengeStations, (_player, stationObj) => {
+        const anyStation: any = stationObj as any;
+        if (anyStation && typeof (anyStation as any).getData === 'function') {
+          const station = (anyStation as any).getData('challengeStation');
+          if (station && this.input.keyboard!.checkDown(this.input.keyboard!.addKey('SPACE'), 250)) {
+            station.startChallenge();
+          }
         }
       });
     }

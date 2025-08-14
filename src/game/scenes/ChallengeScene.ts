@@ -2,6 +2,7 @@ import * as Phaser from 'phaser';
 import { ChallengeEngine } from '../systems/ChallengeEngine';
 import { AIHintSystem } from '../systems/AIHintSystem';
 import { PerformanceTracker } from '../systems/PerformanceTracker';
+import { RemoteChallenge } from '../../utils/challengeApi';
 
 export class ChallengeScene extends Phaser.Scene {
   private challenge!: any;
@@ -11,15 +12,16 @@ export class ChallengeScene extends Phaser.Scene {
   private performanceTracker!: PerformanceTracker;
   private challengeContainer!: Phaser.GameObjects.Container;
   private hintPanel!: Phaser.GameObjects.Container;
-  private codeEditor!: Phaser.GameObjects.DOMElement | null = null;
+  private dynamicChallenge: RemoteChallenge | null = null;
 
   constructor() {
     super({ key: 'ChallengeScene' });
   }
 
-  init(data: { challenge: any; worldType: string }) {
+  init(data: { challenge: any; worldType: string; dynamicChallenge?: RemoteChallenge | null }) {
     this.challenge = data.challenge;
     this.worldType = data.worldType;
+    this.dynamicChallenge = data.dynamicChallenge || null;
   }
 
   create() {
@@ -33,8 +35,8 @@ export class ChallengeScene extends Phaser.Scene {
     this.createHintPanel();
     this.createChallengeContent();
 
-    // Start performance tracking
-    this.performanceTracker.startChallenge(this.challenge.name);
+  // Start performance tracking with worldType & difficulty
+  this.performanceTracker.startChallenge(this.challenge.name, this.worldType, this.challenge.difficulty || 1);
   }
 
   private createChallengeUI() {
@@ -58,18 +60,6 @@ export class ChallengeScene extends Phaser.Scene {
       color: '#bdc3c7'
     }).setOrigin(0.5);
     header.add(subtitle);
-
-    // Back button
-    const backButton = this.add.rectangle(100, 60, 120, 40, 0x95a5a6)
-      .setInteractive({ useHandCursor: true })
-      .on('pointerdown', () => {
-        this.returnToWorld();
-      });
-
-    this.add.text(100, 60, '← Back', {
-      font: '16px monospace',
-      color: '#ffffff'
-    }).setOrigin(0.5);
 
     // Progress indicators
     this.createProgressIndicators();
@@ -160,6 +150,7 @@ export class ChallengeScene extends Phaser.Scene {
   }
 
   private createChallengeContent() {
+    if (this.dynamicChallenge) { this.createDynamicChallengeContent(this.dynamicChallenge); return; }
     this.challengeContainer = this.add.container(400, 350);
 
     // Create challenge-specific content based on type
@@ -185,23 +176,91 @@ export class ChallengeScene extends Phaser.Scene {
     switch (this.challenge.type) {
       case 'debug':
       case 'optimization':
-        this.createCodeEditor(challengeData);
-        break;
+        this.createCodeEditor(challengeData); break;
       case 'design':
       case 'layout':
       case 'ux':
-        this.createDesignCanvas(challengeData);
-        break;
+        this.createDesignCanvas(); break;
       case 'analysis':
       case 'preprocessing':
-        this.createDataAnalysisArea(challengeData);
-        break;
+        this.createDataAnalysisArea(); break;
       default:
-        this.createGenericWorkspace(challengeData);
+        this.createGenericWorkspace();
     }
   }
 
+  private createDynamicChallengeContent(remote: RemoteChallenge) {
+    this.challengeContainer = this.add.container(400, 350);
+  // Removed background box behind question per request
+  // Plain Phaser text (no DOM div) centered within the background
+  const questionStyle: Phaser.Types.GameObjects.Text.TextStyle = {
+    font: '14px monospace',
+    color: '#ecf0f1',
+    align: 'center',
+    wordWrap: { width: 660 }
+  };
+  const questionText = this.add.text(0, -40, remote.question, questionStyle).setOrigin(0.5);
+  this.challengeContainer.add(questionText);
+
+    // Input area background
+  const answerBg = this.add.rectangle(0, 210, 700, 120, 0x2c3e50); // moved farther down & smaller height
+  answerBg.setStrokeStyle(2, 0xf39c12);
+  this.challengeContainer.add(answerBg);
+  const prompt = this.add.text(0, 160, 'Enter your answer below and press Submit:', { font: '12px monospace', color: '#f1c40f' }).setOrigin(0.5);
+  this.challengeContainer.add(prompt);
+
+    // HTML input (DOM Element)
+    const inputEl = document.createElement('input');
+    inputEl.type = 'text';
+    inputEl.maxLength = 120;
+    inputEl.placeholder = 'Your answer (e.g., A, B, C, D or text)';
+  inputEl.style.width = '300px';
+    inputEl.style.padding = '8px';
+    inputEl.style.fontFamily = 'monospace';
+    inputEl.style.fontSize = '14px';
+    inputEl.style.border = '2px solid #f39c12';
+    inputEl.style.background = '#1e2b36';
+    inputEl.style.color = '#ecf0f1';
+  const domInput = this.add.dom(0, 200, inputEl); // align with new answer box position
+    domInput.setData('isSolutionInput', true);
+    this.challengeContainer.add(domInput);
+
+    // Keep a hidden text object for compatibility with existing solution logic
+  const hiddenSolution = this.add.text(0, 250, '', { font: '1px monospace', color: '#2c3e50' }).setOrigin(0.5);
+    hiddenSolution.setData('isSolutionArea', true);
+    hiddenSolution.setVisible(false);
+    this.challengeContainer.add(hiddenSolution);
+
+    // Update hidden solution text on input
+    inputEl.addEventListener('input', () => { hiddenSolution.setText(inputEl.value); });
+    // Allow all character keys (including WASD) to be typed without Phaser intercepting them
+    inputEl.addEventListener('keydown', (e) => {
+      // Stop Phaser's global keyboard handlers (which may be using WASD for movement) from consuming the event
+      e.stopPropagation();
+      // Submit on Enter
+      if (e.key === 'Enter') {
+        e.preventDefault();
+        this.submitSolution();
+      }
+    });
+    // While focused, disable Phaser keyboard plugin so movement keys don't interfere
+    inputEl.addEventListener('focus', () => {
+      if (this.input && this.input.keyboard) {
+        this.input.keyboard.enabled = false;
+      }
+    });
+    inputEl.addEventListener('blur', () => {
+      if (this.input && this.input.keyboard) {
+        this.input.keyboard.enabled = true;
+      }
+    });
+    // Auto focus shortly after creation to ensure DOM mounted
+    setTimeout(() => inputEl.focus(), 50);
+  }
+
   private createCodeEditor(challengeData: any) {
+    this.challengeContainer = this.challengeContainer || this.add.container(400, 350);
+
     // Create a simple code input area (in real implementation, this would be a proper code editor)
     const editorBg = this.add.rectangle(0, 50, 700, 300, 0x2c3e50);
     editorBg.setStrokeStyle(2, 0xf39c12);
@@ -220,7 +279,9 @@ export class ChallengeScene extends Phaser.Scene {
     startingCode.setData('isSolutionArea', true);
   }
 
-  private createDesignCanvas(challengeData: any) {
+  private createDesignCanvas() {
+    this.challengeContainer = this.challengeContainer || this.add.container(400, 350);
+
     const canvasBg = this.add.rectangle(0, 50, 700, 300, 0xecf0f1);
     canvasBg.setStrokeStyle(2, 0x8e44ad);
     this.challengeContainer.add(canvasBg);
@@ -233,7 +294,9 @@ export class ChallengeScene extends Phaser.Scene {
     this.challengeContainer.add(canvasText);
   }
 
-  private createDataAnalysisArea(challengeData: any) {
+  private createDataAnalysisArea() {
+    this.challengeContainer = this.challengeContainer || this.add.container(400, 350);
+
     const analysisBg = this.add.rectangle(0, 50, 700, 300, 0x34495e);
     analysisBg.setStrokeStyle(2, 0x27ae60);
     this.challengeContainer.add(analysisBg);
@@ -246,7 +309,9 @@ export class ChallengeScene extends Phaser.Scene {
     this.challengeContainer.add(analysisText);
   }
 
-  private createGenericWorkspace(challengeData: any) {
+  private createGenericWorkspace() {
+    this.challengeContainer = this.challengeContainer || this.add.container(400, 350);
+
     const workspaceBg = this.add.rectangle(0, 50, 700, 300, 0x34495e);
     this.challengeContainer.add(workspaceBg);
 
@@ -259,37 +324,39 @@ export class ChallengeScene extends Phaser.Scene {
   }
 
   private async requestHint() {
-    const hint = await this.aiHintSystem.generateHint(this.challenge, this.performanceTracker.getCurrentProgress());
-    
-    // Update hint display
-    const hintContent = this.hintPanel.list.find(child => child.getData('isHintContent')) as Phaser.GameObjects.Text;
-    if (hintContent) {
-      hintContent.setText(hint);
-    }
-
-    // Update hint counter
-    const hintCounter = this.children.list.find(child => child.getData('isHintCounter')) as Phaser.GameObjects.Text;
-    if (hintCounter) {
-      const currentHints = this.performanceTracker.getHintCount();
-      hintCounter.setText(`Hints: ${currentHints}/4`);
-    }
+    let hint: string;
+    if (this.dynamicChallenge && this.dynamicChallenge.hint) {
+      if (!this.performanceTracker.getHintCount()) { hint = this.dynamicChallenge.hint; }
+      else { hint = await this.aiHintSystem.generateHint(this.challenge, this.performanceTracker.getCurrentProgress()); }
+    } else { hint = await this.aiHintSystem.generateHint(this.challenge, this.performanceTracker.getCurrentProgress()); }
+    const hintContent = this.hintPanel.list.find(child => child.getData('isHintContent')) as Phaser.GameObjects.Text; if (hintContent) hintContent.setText(hint);
+    const hintCounter = this.children.list.find(child => child.getData('isHintCounter')) as Phaser.GameObjects.Text; if (hintCounter) { const currentHints = this.performanceTracker.getHintCount(); hintCounter.setText(`Hints: ${currentHints}/4`); }
   }
 
   private submitSolution() {
-    // Get solution from interactive area
-    const solutionArea = this.challengeContainer.list.find(child => child.getData('isSolutionArea')) as Phaser.GameObjects.Text;
-    const solution = solutionArea ? solutionArea.text : '';
-
-    // Check solution
-    const result = this.challengeEngine.checkSolution(this.challenge, solution);
-    
-    if (result.correct) {
-      this.performanceTracker.completeChallenge(true);
-      this.showSuccessMessage();
-    } else {
-      this.performanceTracker.recordAttempt(false);
-      this.showErrorMessage(result.feedback);
+    // Prefer DOM input if present
+    const domInput = this.challengeContainer.list.find(child => child.getData('isSolutionInput')) as Phaser.GameObjects.DOMElement;
+    if (domInput) {
+      const el = domInput.node as HTMLInputElement;
+      const existingHidden = this.challengeContainer.list.find(child => child.getData('isSolutionArea')) as Phaser.GameObjects.Text;
+      if (existingHidden) existingHidden.setText(el.value.trim());
     }
+    const solutionArea = this.challengeContainer.list.find(child => child.getData('isSolutionArea')) as Phaser.GameObjects.Text;
+    const solution = solutionArea ? solutionArea.text.trim() : '';
+    let result: { correct: boolean; feedback: string };
+    if (this.dynamicChallenge && this.dynamicChallenge.answer) {
+      let expected = this.dynamicChallenge.answer.trim().toUpperCase();
+      let user = solution.toUpperCase();
+      // Normalize if expected is a single letter (multiple choice). Take first alphanumeric char from user.
+      if (/^[A-Z]$/.test(expected)) {
+        const match = user.match(/[A-Z]/);
+        if (match) user = match[0];
+      }
+      const correct = user === expected;
+      // Do not reveal the correct answer when incorrect
+      result = { correct, feedback: correct ? 'Correct answer!' : 'Incorrect. Review the question and try again.' };
+    } else { result = this.challengeEngine.checkSolution(this.challenge, solution); }
+    if (result.correct) { this.performanceTracker.completeChallenge(true); this.showSuccessMessage(); } else { this.performanceTracker.recordAttempt(false); this.showErrorMessage(result.feedback); }
   }
 
   private showSuccessMessage() {
@@ -356,9 +423,7 @@ export class ChallengeScene extends Phaser.Scene {
     errorOverlay.add(tryAgainText);
   }
 
-  private returnToWorld() {
-    this.scene.start('CareerWorldScene', { worldType: this.worldType });
-  }
+  returnToWorld() { this.scene.start('CareerWorldScene', { worldType: this.worldType }); }
 
   update() {
     // Update timer

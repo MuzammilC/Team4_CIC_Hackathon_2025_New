@@ -1,4 +1,5 @@
 import * as Phaser from 'phaser';
+import { fetchDynamicChallenge, mapWorldTypeToOccupation, RemoteChallenge } from '../../utils/challengeApi';
 
 export class ChallengeStation {
   public sprite: Phaser.GameObjects.Container;
@@ -66,13 +67,18 @@ export class ChallengeStation {
     return colors[Math.min(difficulty - 1, colors.length - 1)];
   }
 
-  startChallenge() {
+  async startChallenge() {
     console.log(`Starting challenge: ${this.challenge.name} in ${this.worldType} world`);
-    
-    // Transition to challenge scene
-    this.scene.scene.start('ChallengeScene', {
-      challenge: this.challenge,
-      worldType: this.worldType
-    });
+    const loadingText = this.scene.add.text(this.sprite.x, this.sprite.y + 90, 'Loading challenge...', { font: '12px monospace', color: '#ffffff' }).setOrigin(0.5);
+    let dynamicChallenge: RemoteChallenge | null = null;
+    try {
+      const occupation = mapWorldTypeToOccupation(this.worldType);
+      dynamicChallenge = await fetchDynamicChallenge(occupation, this.challenge.difficulty);
+    } catch (e) {
+      // handled in fetch
+    } finally {
+      loadingText.destroy();
+    }
+    this.scene.scene.start('ChallengeScene', { challenge: this.challenge, worldType: this.worldType, dynamicChallenge });
   }
 }
