@@ -1,0 +1,190 @@
+{
+  "backend": {
+    "beginner": [
+      {
+        "name": "REST API Design Best Practices",
+        "url": "https://restfulapi.net/",
+        "type": "tutorial",
+        "difficulty": "beginner",
+        "estimatedTime": "2-3 hours",
+        "tags": ["api", "rest", "design"]
+      },
+      {
+        "name": "Node.js Fundamentals",
+        "url": "https://nodejs.org/en/learn/",
+        "type": "documentation",
+        "difficulty": "beginner",
+        "estimatedTime": "4-6 hours",
+        "tags": ["nodejs", "javascript", "runtime"]
+      }
+    ],
+    "intermediate": [
+      {
+        "name": "Database Design and Optimization",
+        "url": "https://use-the-index-luke.com/",
+        "type": "tutorial",
+        "difficulty": "intermediate",
+        "estimatedTime": "6-8 hours",
+        "tags": ["database", "sql", "performance"]
+      },
+      {
+        "name": "Microservices Architecture",
+        "url": "https://microservices.io/",
+        "type": "course",
+        "difficulty": "intermediate",
+        "estimatedTime": "10-15 hours",
+        "tags": ["microservices", "architecture", "scalability"]
+      }
+    ],
+    "advanced": [
+      {
+        "name": "System Design Interview",
+        "url": "https://github.com/donnemartin/system-design-primer",
+        "type": "tutorial",
+        "difficulty": "advanced",
+        "estimatedTime": "20+ hours",
+        "tags": ["system-design", "scalability", "interview"]
+      }
+    ]
+  },
+  "frontend": {
+    "beginner": [
+      {
+        "name": "HTML & CSS Fundamentals",
+        "url": "https://developer.mozilla.org/en-US/docs/Learn",
+        "type": "documentation",
+        "difficulty": "beginner",
+        "estimatedTime": "8-12 hours",
+        "tags": ["html", "css", "fundamentals"]
+      },
+      {
+        "name": "JavaScript Essentials",
+        "url": "https://javascript.info/",
+        "type": "tutorial",
+        "difficulty": "beginner",
+        "estimatedTime": "15-20 hours",
+        "tags": ["javascript", "programming", "web"]
+      }
+    ],
+    "intermediate": [
+      {
+        "name": "React Documentation",
+        "url": "https://react.dev/",
+        "type": "documentation",
+        "difficulty": "intermediate",
+        "estimatedTime": "10-15 hours",
+        "tags": ["react", "components", "state"]
+      },
+      {
+        "name": "CSS Grid & Flexbox",
+        "url": "https://css-tricks.com/snippets/css/complete-guide-grid/",
+        "type": "tutorial",
+        "difficulty": "intermediate",
+        "estimatedTime": "4-6 hours",
+        "tags": ["css", "layout", "responsive"]
+      }
+    ],
+    "advanced": [
+      {
+        "name": "Advanced React Patterns",
+        "url": "https://reactpatterns.com/",
+        "type": "tutorial",
+        "difficulty": "advanced",
+        "estimatedTime": "12-18 hours",
+        "tags": ["react", "patterns", "advanced"]
+      }
+    ]
+  },
+  "datascience": {
+    "beginner": [
+      {
+        "name": "Python for Data Science",
+        "url": "https://www.kaggle.com/learn/python",
+        "type": "course",
+        "difficulty": "beginner",
+        "estimatedTime": "6-8 hours",
+        "tags": ["python", "data-science", "basics"]
+      },
+      {
+        "name": "Pandas Documentation",
+        "url": "https://pandas.pydata.org/docs/",
+        "type": "documentation",
+        "difficulty": "beginner",
+        "estimatedTime": "8-12 hours",
+        "tags": ["pandas", "data-manipulation", "python"]
+      }
+    ],
+    "intermediate": [
+      {
+        "name": "Machine Learning Course",
+        "url": "https://www.coursera.org/learn/machine-learning",
+        "type": "course",
+        "difficulty": "intermediate",
+        "estimatedTime": "40+ hours",
+        "tags": ["machine-learning", "algorithms", "statistics"]
+      },
+      {
+        "name": "Data Visualization with Python",
+        "url": "https://matplotlib.org/stable/tutorials/index.html",
+        "type": "tutorial",
+        "difficulty": "intermediate",
+        "estimatedTime": "6-10 hours",
+        "tags": ["visualization", "matplotlib", "seaborn"]
+      }
+    ],
+    "advanced": [
+      {
+        "name": "Deep Learning Specialization",
+        "url": "https://www.coursera.org/specializations/deep-learning",
+        "type": "course",
+        "difficulty": "advanced",
+        "estimatedTime": "100+ hours",
+        "tags": ["deep-learning", "neural-networks", "ai"]
+      }
+    ]
+  },
+  "practice": {
+    "coding": [
+      {
+        "name": "LeetCode",
+        "url": "https://leetcode.com/",
+        "type": "practice",
+        "tags": ["algorithms", "data-structures", "interview"]
+      },
+      {
+        "name": "HackerRank",
+        "url": "https://www.hackerrank.com/",
+        "type": "practice",
+        "tags": ["programming", "challenges", "skills"]
+      }
+    ],
+    "frontend": [
+      {
+        "name": "Frontend Mentor",
+        "url": "https://www.frontendmentor.io/",
+        "type": "practice",
+        "tags": ["frontend", "design", "challenges"]
+      },
+      {
+        "name": "CSS Battle",
+        "url": "https://cssbattle.dev/",
+        "type": "practice",
+        "tags": ["css", "challenges", "creative"]
+      }
+    ],
+    "datascience": [
+      {
+        "name": "Kaggle Competitions",
+        "url": "https://www.kaggle.com/competitions",
+        "type": "practice",
+        "tags": ["machine-learning", "competitions", "datasets"]
+      },
+      {
+        "name": "DataCamp Practice",
+        "url": "https://www.datacamp.com/",
+        "type": "practice",
+        "tags": ["data-science", "interactive", "projects"]
+      }
+    ]
+  }
+}

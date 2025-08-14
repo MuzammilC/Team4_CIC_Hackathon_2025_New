@@ -1,14 +1,7 @@
-import React from "react";
-import ReactDOM from "react-dom/client";
-import App from "./App.tsx";
-import "./index.css";
-// import { Amplify } from "aws-amplify";
-// import outputs from "../amplify_outputs.json";
+import './index.css';
+import { Game } from './game/Game.js';
 
-// Amplify.configure(outputs);
-
-ReactDOM.createRoot(document.getElementById("root")!).render(
-  <React.StrictMode>
-    <App />
-  </React.StrictMode>
-);
+// Initialize the game when DOM content is loaded
+document.addEventListener('DOMContentLoaded', () => {
+  new Game();
+});
