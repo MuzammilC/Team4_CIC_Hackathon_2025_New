@@ -11,6 +11,9 @@ export class Player {
     // Cast to physics body to access velocity
     const body = this.sprite.body as Phaser.Physics.Arcade.Body;
     body.setCollideWorldBounds(true);
+    
+    // Make player slightly smaller for better movement feel
+    body.setSize(28, 28);
   }
 
   update(cursors: Phaser.Types.Input.Keyboard.CursorKeys, wasdKeys: any) {

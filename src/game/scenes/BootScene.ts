@@ -6,8 +6,11 @@ export class BootScene extends Phaser.Scene {
   }
 
   preload() {
-    // Create simple colored rectangles as placeholder assets
-    this.load.image('logo', 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mP8/5+hHgAHggJ/PchI7wAAAABJRU5ErkJggg==');
+    // Load career path building assets
+    this.load.image('backend-building', 'src/assets/backend.svg');
+    this.load.image('frontend-building', 'src/assets/frontend.svg');
+    this.load.image('datascience-building', 'src/assets/data-science.svg');
+    this.load.image('career-background', 'src/assets/background_choose_career.svg');
     
     // Load basic UI elements
     this.createColorTexture('button-bg', 0x3498db, 200, 50);
@@ -15,7 +18,7 @@ export class BootScene extends Phaser.Scene {
     this.createColorTexture('player', 0xf39c12, 32, 32);
     this.createColorTexture('npc', 0x9b59b6, 32, 32);
     
-    // World-specific colors
+    // World-specific colors (fallbacks)
     this.createColorTexture('backend-world', 0x2c3e50, 800, 600);
     this.createColorTexture('frontend-world', 0x8e44ad, 800, 600);
     this.createColorTexture('datascience-world', 0x27ae60, 800, 600);
@@ -70,12 +73,12 @@ export class BootScene extends Phaser.Scene {
       color: '#ecf0f1'
     }).setOrigin(0.5);
 
-    const subtitle = this.add.text(640, 280, 'AI-Powered Tech Career Exploration', {
+    this.add.text(640, 280, 'AI-Powered Tech Career Exploration', {
       font: '24px monospace',
       color: '#bdc3c7'
     }).setOrigin(0.5);
 
-    const startButton = this.add.rectangle(640, 400, 200, 50, 0x3498db)
+    this.add.rectangle(640, 400, 200, 50, 0x3498db)
       .setInteractive({ useHandCursor: true })
       .on('pointerdown', () => {
         this.scene.start('WorldMapScene');
