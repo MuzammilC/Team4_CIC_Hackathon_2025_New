@@ -14,6 +14,9 @@ export class WorldMapScene extends Phaser.Scene {
   }
 
   create() {
+    // Disable gravity for top-down world map movement
+    this.physics.world.gravity.y = 0;
+    
     // Use the background asset if available, otherwise create programmatic background
     if (this.textures.exists('career-background')) {
       this.createAssetBackground();

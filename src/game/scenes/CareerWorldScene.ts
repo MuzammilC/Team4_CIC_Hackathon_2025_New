@@ -26,6 +26,13 @@ export class CareerWorldScene extends Phaser.Scene {
   }
 
   create() {
+    // Set up physics for Mario-style platforming in level worlds
+    if (this.worldType === 'backend' || this.worldType === 'frontend') {
+      this.physics.world.gravity.y = 800;
+    } else {
+      this.physics.world.gravity.y = 0;
+    }
+    
     // Create world background based on type
     this.createWorldEnvironment();
     
