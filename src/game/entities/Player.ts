@@ -5,15 +5,15 @@ export class Player {
   private speed: number = 200;
 
   constructor(scene: Phaser.Scene, x: number, y: number) {
-    this.sprite = scene.add.rectangle(x, y, 32, 32, 0xf39c12);
+    this.sprite = scene.add.rectangle(x, y, 24, 24, 0xf39c12);
     scene.physics.add.existing(this.sprite);
     
     // Cast to physics body to access velocity
     const body = this.sprite.body as Phaser.Physics.Arcade.Body;
     body.setCollideWorldBounds(true);
     
-    // Make player slightly smaller for better movement feel
-    body.setSize(28, 28);
+    // Make player smaller for better movement feel in detailed environments
+    body.setSize(20, 20);
   }
 
   update(cursors: Phaser.Types.Input.Keyboard.CursorKeys, wasdKeys: any) {

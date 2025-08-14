@@ -12,6 +12,22 @@ export class BootScene extends Phaser.Scene {
     this.load.image('datascience-building', 'src/assets/data-science.svg');
     this.load.image('career-background', 'src/assets/background_choose_career.svg');
     
+    // Load backend world assets
+    this.load.image('backend-bg', 'src/assets/backend/backend_background.png');
+    this.load.image('backend-server', 'src/assets/backend/server.svg');
+    this.load.image('backend-server2', 'src/assets/backend/server2.svg');
+    this.load.image('backend-plant', 'src/assets/backend/plant.svg');
+    this.load.image('backend-file', 'src/assets/backend/file.svg');
+    this.load.image('backend-vault', 'src/assets/backend/vault.svg');
+
+    // Load frontend world assets  
+    this.load.image('frontend-bg', 'src/assets/frontend/frontend_background.png');
+    this.load.image('frontend-paintbrush', 'src/assets/frontend/paintbrush.svg');
+    this.load.image('frontend-man', 'src/assets/frontend/man.svg');
+    this.load.image('frontend-arcade', 'src/assets/frontend/arcade.svg');
+    this.load.image('frontend-speaker', 'src/assets/frontend/speaker.svg');
+    this.load.image('frontend-plant', 'src/assets/frontend/plant.svg');
+    
     // Load basic UI elements
     this.createColorTexture('button-bg', 0x3498db, 200, 50);
     this.createColorTexture('world-portal', 0xe74c3c, 128, 128);
