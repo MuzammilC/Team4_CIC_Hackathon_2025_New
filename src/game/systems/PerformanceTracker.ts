@@ -23,13 +23,11 @@ interface SessionData {
 }
 
 export class PerformanceTracker {
-  private scene: Phaser.Scene;
   private currentChallenge: PerformanceData | null = null;
   private sessionData: SessionData;
   private localStorage: Storage;
 
-  constructor(scene: Phaser.Scene) {
-    this.scene = scene;
+  constructor(_scene: Phaser.Scene) {
     this.localStorage = window.localStorage;
     this.sessionData = this.loadSessionData();
   }

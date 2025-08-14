@@ -131,10 +131,13 @@ export class AnalysisScene extends Phaser.Scene {
 
   private createNavigationButtons() {
     // Back to world button
-    const backButton = this.add.rectangle(200, 650, 200, 50, 0x95a5a6)
+    this.add.rectangle(200, 650, 200, 50, 0x95a5a6)
       .setInteractive({ useHandCursor: true })
       .on('pointerdown', () => {
-        this.scene.start('CareerWorldScene', { worldType: this.worldType });
+        this.scene.start('ChallengeScene', {
+          challenge: this.challenge,
+          worldType: this.worldType
+        });
       });
 
     this.add.text(200, 650, '← Back to World', {
@@ -143,14 +146,10 @@ export class AnalysisScene extends Phaser.Scene {
     }).setOrigin(0.5);
 
     // Learning resources button
-    const resourcesButton = this.add.rectangle(640, 650, 200, 50, 0x3498db)
+    this.add.rectangle(640, 650, 200, 50, 0x3498db)
       .setInteractive({ useHandCursor: true })
       .on('pointerdown', () => {
-        this.scene.start('LearningHubScene', {
-          worldType: this.worldType,
-          challenge: this.challenge,
-          performance: this.performance
-        });
+        this.openResources();
       });
 
     this.add.text(640, 650, 'Learning Resources', {
@@ -159,7 +158,7 @@ export class AnalysisScene extends Phaser.Scene {
     }).setOrigin(0.5);
 
     // Next challenge button
-    const nextButton = this.add.rectangle(1080, 650, 200, 50, 0x27ae60)
+    this.add.rectangle(1080, 650, 200, 50, 0x27ae60)
       .setInteractive({ useHandCursor: true })
       .on('pointerdown', () => {
         this.scene.start('CareerWorldScene', { worldType: this.worldType });
@@ -248,5 +247,10 @@ export class AnalysisScene extends Phaser.Scene {
     ];
 
     return recommendations.join(' ');
+  }
+
+  private openResources() {
+    // Placeholder: in future could navigate to a resources scene or open external links
+    console.log('Learning resources button clicked');
   }
 }

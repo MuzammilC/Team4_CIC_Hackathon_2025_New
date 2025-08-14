@@ -1,9 +1,7 @@
 export class ChallengeEngine {
-  private scene: Phaser.Scene;
   private challengeDatabase: Map<string, any> = new Map();
 
-  constructor(scene: Phaser.Scene) {
-    this.scene = scene;
+  constructor(_scene: Phaser.Scene) {
     this.initializeChallengeDatabase();
   }
 

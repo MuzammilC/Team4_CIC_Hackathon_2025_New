@@ -64,11 +64,11 @@ export class DataManager {
     if (!categoryResources) return [];
 
     if (difficulty && categoryResources[difficulty]) {
-      return categoryResources[difficulty];
+      return categoryResources[difficulty] as Resource[];
     }
 
-    // Return all resources for the category
-    return Object.values(categoryResources).flat();
+    // Return all resources for the category (values can be arrays of Resource)
+    return (Object.values(categoryResources).flat() as Resource[]);
   }
 
   getPracticeResources(type: string): Resource[] {

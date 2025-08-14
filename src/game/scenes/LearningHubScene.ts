@@ -190,7 +190,7 @@ export class LearningHubScene extends Phaser.Scene {
   }
 
   private createBackButton() {
-    const backButton = this.add.rectangle(100, 650, 200, 50, 0x95a5a6)
+    this.add.rectangle(100, 650, 200, 50, 0x95a5a6)
       .setInteractive({ useHandCursor: true })
       .on('pointerdown', () => {
         this.scene.start('AnalysisScene', {

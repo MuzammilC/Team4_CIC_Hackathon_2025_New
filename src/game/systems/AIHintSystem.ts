@@ -1,13 +1,11 @@
 import { BedrockRuntimeClient, InvokeModelCommand } from '@aws-sdk/client-bedrock-runtime';
 
 export class AIHintSystem {
-  private scene: Phaser.Scene;
   private bedrockClient: BedrockRuntimeClient;
   private hintLevel: number = 0;
   private maxHints: number = 4;
 
-  constructor(scene: Phaser.Scene) {
-    this.scene = scene;
+  constructor(_scene: Phaser.Scene) {
     this.bedrockClient = new BedrockRuntimeClient({
       region: 'us-east-1',
       // Credentials will be handled by AWS SDK automatically
@@ -203,7 +201,7 @@ Be specific and actionable. Limit to 4-5 sentences.
     }
   }
 
-  private getFallbackCareerRecommendation(worldType: string, performance: any): string {
+  private getFallbackCareerRecommendation(worldType: string, _performance: any): string {
     const recommendations = {
       backend: 'Consider roles like Backend Developer, API Engineer, or DevOps Engineer. Focus on mastering databases, system design, and cloud technologies. Next steps: build REST APIs, learn containerization, and practice system architecture.',
       frontend: 'Explore positions like Frontend Developer, UI Engineer, or UX Developer. Develop expertise in modern frameworks, design systems, and user experience. Next steps: master React/Vue, learn design principles, and build responsive applications.',
