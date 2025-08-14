@@ -31,12 +31,12 @@ export class CareerWorldScene extends Phaser.Scene {
     
     // Set world bounds for worlds with background assets to limit movement to background
     if (this.worldType === 'backend') {
-      // Backend world bounds - matches the yellow/brown background area
-      this.physics.world.setBounds(50, 150, 1180, 470);
+      // Backend world bounds (raised upward so player can move higher; previously top=150 felt blocked)
+      this.physics.world.setBounds(50, 110, 1180, 510); // height adjusted to keep bottom similar (~620)
       this.cameras.main.setBounds(0, 0, 1280, 720);
     } else if (this.worldType === 'frontend') {
-      // Frontend world bounds - matches the teal/cyan background area  
-      this.physics.world.setBounds(50, 150, 1180, 470);
+      // Frontend world bounds (same adjustment)
+      this.physics.world.setBounds(50, 110, 1180, 510);
       this.cameras.main.setBounds(0, 0, 1280, 720);
     } else {
       this.physics.world.setBounds(0, 0, 1280, 720);
@@ -74,6 +74,21 @@ export class CareerWorldScene extends Phaser.Scene {
     if (this.worldType === 'backend' || this.worldType === 'frontend') {
       this.cameras.main.setDeadzone(400, 300);
     }
+
+    // Debug collision body toggle (press D)
+    const debugKey = this.input.keyboard?.addKey('D');
+    let debugG: Phaser.GameObjects.Graphics | null = null;
+    debugKey?.on('down', () => {
+      if (debugG) { debugG.destroy(); debugG = null; return; }
+      debugG = this.add.graphics();
+      debugG.lineStyle(1, 0xff00ff, 0.8);
+      this.events.on('postupdate', () => {
+        if (!debugG || !this.player) return;
+        debugG.clear();
+        const body = this.player.sprite.body as Phaser.Physics.Arcade.Body;
+        debugG.strokeRect(body.x, body.y, body.width, body.height);
+      });
+    });
   }
 
   private getWorldData(worldType: string) {
