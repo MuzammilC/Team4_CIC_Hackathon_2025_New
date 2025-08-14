@@ -1,0 +1,165 @@
+{
+  "backend": [
+    {
+      "id": "api-debug-basic",
+      "name": "API Debugging",
+      "difficulty": 1,
+      "type": "debug",
+      "title": "Fix the Broken User API",
+      "description": "The user API endpoint is returning errors. Fix the issues and ensure proper error handling.",
+      "skillsAssessed": ["Problem Solving", "Error Handling", "API Design"],
+      "timeLimit": 300000,
+      "startingCode": "app.get('/api/users/:id', async (req, res) => {\n  const user = await User.findById(req.params.id);\n  res.json(user);\n});",
+      "expectedOutput": "Fixed API with validation and error handling",
+      "learningResources": [
+        {
+          "name": "Express.js Error Handling",
+          "url": "https://expressjs.com/en/guide/error-handling.html",
+          "type": "documentation"
+        }
+      ]
+    },
+    {
+      "id": "db-optimization",
+      "name": "Database Optimization",
+      "difficulty": 2,
+      "type": "optimization",
+      "title": "Speed Up Slow Queries",
+      "description": "Optimize database queries to improve performance on large datasets.",
+      "skillsAssessed": ["Performance Optimization", "SQL", "Database Design"],
+      "timeLimit": 450000,
+      "learningResources": [
+        {
+          "name": "SQL Performance Tuning",
+          "url": "https://use-the-index-luke.com/",
+          "type": "tutorial"
+        }
+      ]
+    },
+    {
+      "id": "microservices-design",
+      "name": "System Architecture",
+      "difficulty": 3,
+      "type": "architecture",
+      "title": "Design Microservices Architecture",
+      "description": "Break down a monolithic application into microservices.",
+      "skillsAssessed": ["System Design", "Architecture", "Scalability"],
+      "timeLimit": 600000,
+      "learningResources": [
+        {
+          "name": "Microservices Patterns",
+          "url": "https://microservices.io/patterns/",
+          "type": "documentation"
+        }
+      ]
+    }
+  ],
+  "frontend": [
+    {
+      "id": "responsive-layout",
+      "name": "Component Layout",
+      "difficulty": 1,
+      "type": "layout",
+      "title": "Create Responsive Card Grid",
+      "description": "Build a responsive card layout that adapts to different screen sizes.",
+      "skillsAssessed": ["CSS Layout", "Responsive Design", "Grid/Flexbox"],
+      "timeLimit": 300000,
+      "startingCode": ".card-container {\n  /* Add your CSS here */\n}\n\n.card {\n  /* Style individual cards */\n}",
+      "learningResources": [
+        {
+          "name": "CSS Grid Complete Guide",
+          "url": "https://css-tricks.com/snippets/css/complete-guide-grid/",
+          "type": "tutorial"
+        }
+      ]
+    },
+    {
+      "id": "navigation-fix",
+      "name": "CSS Positioning",
+      "difficulty": 2,
+      "type": "styling",
+      "title": "Fix Navigation Bar Layout",
+      "description": "Repair the broken navigation bar with proper alignment and positioning.",
+      "skillsAssessed": ["CSS Positioning", "Flexbox", "Layout Skills"],
+      "timeLimit": 400000,
+      "learningResources": [
+        {
+          "name": "Flexbox Complete Guide",
+          "url": "https://css-tricks.com/snippets/css/a-guide-to-flexbox/",
+          "type": "tutorial"
+        }
+      ]
+    },
+    {
+      "id": "user-flow-design",
+      "name": "User Flow Design",
+      "difficulty": 3,
+      "type": "ux",
+      "title": "Design Checkout Flow",
+      "description": "Create an intuitive user flow for an e-commerce checkout process.",
+      "skillsAssessed": ["UX Design", "User Research", "Information Architecture"],
+      "timeLimit": 500000,
+      "learningResources": [
+        {
+          "name": "UX Design Process",
+          "url": "https://www.interaction-design.org/literature/topics/ux-design",
+          "type": "course"
+        }
+      ]
+    }
+  ],
+  "datascience": [
+    {
+      "id": "data-cleaning-basics",
+      "name": "Data Cleaning",
+      "difficulty": 1,
+      "type": "preprocessing",
+      "title": "Clean Customer Dataset",
+      "description": "Clean a messy customer dataset by handling missing values and duplicates.",
+      "skillsAssessed": ["Data Preprocessing", "Pandas", "Data Quality"],
+      "timeLimit": 400000,
+      "startingCode": "import pandas as pd\nimport numpy as np\n\n# Load and clean the data\ndf = pd.read_csv('customer_data.csv')\n\n# Your cleaning code here",
+      "learningResources": [
+        {
+          "name": "Pandas Data Cleaning",
+          "url": "https://pandas.pydata.org/pandas-docs/stable/user_guide/missing_data.html",
+          "type": "documentation"
+        }
+      ]
+    },
+    {
+      "id": "feature-engineering",
+      "name": "Feature Engineering",
+      "difficulty": 2,
+      "type": "features",
+      "title": "Create Predictive Features",
+      "description": "Engineer meaningful features from raw data to improve model performance.",
+      "skillsAssessed": ["Feature Engineering", "Domain Knowledge", "Statistical Analysis"],
+      "timeLimit": 500000,
+      "learningResources": [
+        {
+          "name": "Feature Engineering Techniques",
+          "url": "https://machinelearningmastery.com/discover-feature-engineering-how-to-engineer-features-and-how-to-get-good-at-it/",
+          "type": "tutorial"
+        }
+      ]
+    },
+    {
+      "id": "model-selection",
+      "name": "Model Selection",
+      "difficulty": 3,
+      "type": "modeling",
+      "title": "Choose Optimal ML Model",
+      "description": "Select and tune the best machine learning model for a classification task.",
+      "skillsAssessed": ["Machine Learning", "Model Evaluation", "Hyperparameter Tuning"],
+      "timeLimit": 600000,
+      "learningResources": [
+        {
+          "name": "Scikit-learn Model Selection",
+          "url": "https://scikit-learn.org/stable/model_selection.html",
+          "type": "documentation"
+        }
+      ]
+    }
+  ]
+}

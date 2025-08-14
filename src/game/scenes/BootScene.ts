@@ -1,0 +1,100 @@
+import * as Phaser from 'phaser';
+
+export class BootScene extends Phaser.Scene {
+  constructor() {
+    super({ key: 'BootScene' });
+  }
+
+  preload() {
+    // Create simple colored rectangles as placeholder assets
+    this.load.image('logo', 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mP8/5+hHgAHggJ/PchI7wAAAABJRU5ErkJggg==');
+    
+    // Load basic UI elements
+    this.createColorTexture('button-bg', 0x3498db, 200, 50);
+    this.createColorTexture('world-portal', 0xe74c3c, 128, 128);
+    this.createColorTexture('player', 0xf39c12, 32, 32);
+    this.createColorTexture('npc', 0x9b59b6, 32, 32);
+    
+    // World-specific colors
+    this.createColorTexture('backend-world', 0x2c3e50, 800, 600);
+    this.createColorTexture('frontend-world', 0x8e44ad, 800, 600);
+    this.createColorTexture('datascience-world', 0x27ae60, 800, 600);
+    
+    // Loading bar
+    this.createLoadingBar();
+  }
+
+  private createColorTexture(key: string, color: number, width: number, height: number) {
+    this.add.graphics()
+      .fillStyle(color)
+      .fillRect(0, 0, width, height)
+      .generateTexture(key, width, height)
+      .destroy();
+  }
+
+  private createLoadingBar() {
+    const progressBar = this.add.graphics();
+    const progressBox = this.add.graphics();
+    progressBox.fillStyle(0x222222);
+    progressBox.fillRect(540, 320, 200, 50);
+
+    const loadingText = this.add.text(640, 280, 'Loading...', {
+      font: '20px monospace',
+      color: '#ffffff'
+    }).setOrigin(0.5);
+
+    const percentText = this.add.text(640, 345, '0%', {
+      font: '18px monospace',
+      color: '#ffffff'
+    }).setOrigin(0.5);
+
+    this.load.on('progress', (value: number) => {
+      progressBar.clear();
+      progressBar.fillStyle(0xffffff);
+      progressBar.fillRect(550, 330, 180 * value, 30);
+      percentText.setText(Math.floor(value * 100) + '%');
+    });
+
+    this.load.on('complete', () => {
+      progressBar.destroy();
+      progressBox.destroy();
+      loadingText.destroy();
+      percentText.destroy();
+    });
+  }
+
+  create() {
+    // Display game title and intro
+    const title = this.add.text(640, 200, 'Career Quest', {
+      font: 'bold 64px monospace',
+      color: '#ecf0f1'
+    }).setOrigin(0.5);
+
+    const subtitle = this.add.text(640, 280, 'AI-Powered Tech Career Exploration', {
+      font: '24px monospace',
+      color: '#bdc3c7'
+    }).setOrigin(0.5);
+
+    const startButton = this.add.rectangle(640, 400, 200, 50, 0x3498db)
+      .setInteractive({ useHandCursor: true })
+      .on('pointerdown', () => {
+        this.scene.start('WorldMapScene');
+      });
+
+    this.add.text(640, 400, 'Start Adventure', {
+      font: '20px monospace',
+      color: '#ffffff'
+    }).setOrigin(0.5);
+
+    // Animate title
+    this.tweens.add({
+      targets: title,
+      scaleX: 1.1,
+      scaleY: 1.1,
+      duration: 2000,
+      yoyo: true,
+      repeat: -1,
+      ease: 'Sine.easeInOut'
+    });
+  }
+}

@@ -1,0 +1,82 @@
+{
+  "personalities": [
+    {
+      "id": "alex-debug",
+      "name": "Alex Debug",
+      "worldType": "backend",
+      "style": "methodical",
+      "role": "Senior Backend Engineer",
+      "catchphrases": [
+        "Let's debug this step by step.",
+        "Every error tells a story.",
+        "Good code is self-documenting.",
+        "Performance matters, but correctness comes first."
+      ],
+      "specialties": [
+        "API Design",
+        "Database Optimization",
+        "System Architecture",
+        "Error Handling",
+        "Performance Tuning"
+      ],
+      "hintStyle": {
+        "level1": "Ask guiding questions about the problem approach",
+        "level2": "Point to specific concepts or methods to research",
+        "level3": "Provide code snippets or structural guidance",
+        "level4": "Give step-by-step implementation details"
+      }
+    },
+    {
+      "id": "maya-pixel",
+      "name": "Maya Pixel",
+      "worldType": "frontend",
+      "style": "creative",
+      "role": "UI/UX Designer & Frontend Developer",
+      "catchphrases": [
+        "Design is not just how it looks, but how it works.",
+        "Every pixel has a purpose.",
+        "Users don't read, they scan.",
+        "Accessibility is not optional."
+      ],
+      "specialties": [
+        "User Experience Design",
+        "CSS Layout & Animation",
+        "Responsive Design",
+        "Component Architecture",
+        "Design Systems"
+      ],
+      "hintStyle": {
+        "level1": "Think about user needs and interface goals",
+        "level2": "Consider specific CSS properties or design principles",
+        "level3": "Show visual examples or code patterns",
+        "level4": "Provide complete implementation with explanations"
+      }
+    },
+    {
+      "id": "ana-lytics",
+      "name": "Dr. Ana Lytics",
+      "worldType": "datascience",
+      "style": "encouraging",
+      "role": "Principal Data Scientist",
+      "catchphrases": [
+        "Data tells stories, we just need to listen.",
+        "Every dataset is a puzzle waiting to be solved.",
+        "Correlation doesn't imply causation, but it's a good start.",
+        "The best insights come from the simplest questions."
+      ],
+      "specialties": [
+        "Data Preprocessing",
+        "Statistical Analysis",
+        "Machine Learning",
+        "Data Visualization",
+        "Feature Engineering"
+      ],
+      "hintStyle": {
+        "level1": "What patterns might we expect to see in this data?",
+        "level2": "Consider these statistical methods or Python libraries",
+        "level3": "Here's a code example showing the technique",
+        "level4": "Let me walk you through the complete solution"
+      }
+    }
+  ]
+}

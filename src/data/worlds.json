@@ -1,0 +1,117 @@
+{
+  "worlds": [
+    {
+      "id": "backend",
+      "name": "Backend Development Lab",
+      "type": "backend",
+      "description": "Master server-side development, APIs, and system architecture",
+      "color": "0x2c3e50",
+      "backgroundColor": "#2c3e50",
+      "theme": "server-room",
+      "npcs": [
+        {
+          "id": "backend-mentor",
+          "name": "Alex Debug",
+          "role": "Senior Backend Engineer",
+          "personality": "methodical",
+          "position": { "x": 200, "y": 300 },
+          "dialogue": [
+            "Welcome to the Backend Lab! I'm Alex, and I'll guide you through server-side development.",
+            "Remember: good APIs are like good conversations - clear, consistent, and helpful.",
+            "Every bug is a learning opportunity. Let's dive deep into the code!"
+          ]
+        }
+      ],
+      "decorations": [
+        {
+          "id": "server-rack-1",
+          "type": "server",
+          "position": { "x": 150, "y": 150 },
+          "description": "Production server cluster"
+        },
+        {
+          "id": "terminal-1",
+          "type": "terminal",
+          "position": { "x": 300, "y": 150 },
+          "interactive": true,
+          "description": "Development terminal"
+        }
+      ]
+    },
+    {
+      "id": "frontend",
+      "name": "Frontend Design Studio",
+      "type": "frontend",
+      "description": "Create beautiful, responsive user interfaces and experiences",
+      "color": "0x8e44ad",
+      "backgroundColor": "#8e44ad",
+      "theme": "design-studio",
+      "npcs": [
+        {
+          "id": "frontend-mentor",
+          "name": "Maya Pixel",
+          "role": "UI/UX Designer & Frontend Developer",
+          "personality": "creative",
+          "position": { "x": 200, "y": 300 },
+          "dialogue": [
+            "Hey there! I'm Maya, your guide to frontend development and design.",
+            "Great interfaces tell a story - let's learn to craft compelling user experiences.",
+            "Remember: users don't care about your code, they care about how it makes them feel."
+          ]
+        }
+      ],
+      "decorations": [
+        {
+          "id": "design-desk-1",
+          "type": "desk",
+          "position": { "x": 150, "y": 150 },
+          "description": "Design workstation with drawing tablet"
+        },
+        {
+          "id": "inspiration-board",
+          "type": "poster",
+          "position": { "x": 300, "y": 100 },
+          "description": "UI inspiration board"
+        }
+      ]
+    },
+    {
+      "id": "datascience",
+      "name": "Data Science Laboratory",
+      "type": "datascience",
+      "description": "Unlock insights from data with machine learning and analytics",
+      "color": "0x27ae60",
+      "backgroundColor": "#27ae60",
+      "theme": "laboratory",
+      "npcs": [
+        {
+          "id": "datascience-mentor",
+          "name": "Dr. Ana Lytics",
+          "role": "Principal Data Scientist",
+          "personality": "encouraging",
+          "position": { "x": 200, "y": 300 },
+          "dialogue": [
+            "Greetings! I'm Dr. Lytics, and I'm excited to explore data science with you.",
+            "Data is like a treasure map - we just need to learn how to read it properly.",
+            "Every dataset has a story to tell. Let's uncover some amazing insights together!"
+          ]
+        }
+      ],
+      "decorations": [
+        {
+          "id": "data-viz-1",
+          "type": "chart",
+          "position": { "x": 150, "y": 150 },
+          "description": "Interactive data visualization display"
+        },
+        {
+          "id": "ml-workstation",
+          "type": "screen",
+          "position": { "x": 300, "y": 150 },
+          "interactive": true,
+          "description": "Machine learning training monitor"
+        }
+      ]
+    }
+  ]
+}
