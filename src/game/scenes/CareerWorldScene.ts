@@ -1,6 +1,7 @@
 import * as Phaser from 'phaser';
 import { Player } from '../entities/Player';
 import { ChallengeStation } from '../entities/ChallengeStation';
+import { fetchDynamicChallenge, mapWorldTypeToOccupation } from '../../utils/challengeApi';
 
 export class CareerWorldScene extends Phaser.Scene {
   private player!: Player;
@@ -180,6 +181,45 @@ export class CareerWorldScene extends Phaser.Scene {
     this.createFrontendAtmosphere();
   }
 
+  private createBackendAtmosphere() {
+    // Add subtle grid pattern for tech feel (only within movement bounds)
+    const grid = this.add.graphics();
+    grid.lineStyle(1, 0x34495e, 0.15);
+    
+    // Vertical lines (within movement bounds)
+    for (let x = 80; x < 1200; x += 40) {
+      grid.moveTo(x, 180);
+      grid.lineTo(x, 580);
+    }
+    
+    // Horizontal lines (within movement bounds)
+    for (let y = 180; y < 580; y += 40) {
+      grid.moveTo(80, y);
+      grid.lineTo(1200, y);
+    }
+    
+    grid.strokePath();
+  }
+
+  private createFrontendAtmosphere() {
+    // Add subtle creative design pattern for frontend feel (only within movement bounds)
+    const designGrid = this.add.graphics();
+    designGrid.lineStyle(1, 0x9b59b6, 0.12); // Purple tint for design studio
+    
+    // Create diagonal lines for a more creative feel (within movement bounds)
+    for (let x = 80; x < 1200; x += 60) {
+      designGrid.moveTo(x, 180);
+      designGrid.lineTo(x + 30, 580);
+    }
+    
+    for (let x = 110; x < 1200; x += 60) {
+      designGrid.moveTo(x, 180);
+      designGrid.lineTo(x - 30, 580);
+    }
+    
+    designGrid.strokePath();
+  }
+
   private createFrontendLevels() {
     // Level definitions matching the desired frontend studio layout
     const levels = [
@@ -198,8 +238,8 @@ export class CareerWorldScene extends Phaser.Scene {
         levelAsset.setInteractive({ useHandCursor: true });
         
         // Add click handler to enter level
-        levelAsset.on('pointerdown', () => {
-          this.enterFrontendLevel(levelData.level, levelData.name);
+        levelAsset.on('pointerdown', async () => {
+          await this.enterFrontendLevel(levelData.level, levelData.name);
         });
 
         // Add level indicator background
@@ -257,23 +297,47 @@ export class CareerWorldScene extends Phaser.Scene {
     });
   }
 
-  private enterFrontendLevel(level: number, name: string) {
+  private async enterFrontendLevel(level: number, name: string) {
     console.log(`Entering Frontend Level ${level}: ${name}`);
     
-    // Create a challenge based on the level
-    const challenge = {
-      id: `frontend-level-${level}`,
-      name: name,
-      difficulty: level,
-      type: this.getFrontendLevelType(level),
-      worldType: 'frontend'
-    };
+    // Show loading indicator
+    const loadingText = this.add.text(640, 360, 'Loading challenge...', {
+      font: 'bold 24px monospace',
+      color: '#9b59b6'
+    }).setOrigin(0.5);
 
-    // Transition to challenge scene
-    this.scene.start('ChallengeScene', {
-      challenge: challenge,
-      worldType: this.worldType
-    });
+    try {
+      // Fetch dynamic challenge from API
+      const occupation = mapWorldTypeToOccupation(this.worldType);
+      const dynamicChallenge = await fetchDynamicChallenge(occupation, level);
+
+      // Create a challenge based on the level
+      const challenge = {
+        id: `frontend-level-${level}`,
+        name: name,
+        difficulty: level,
+        type: this.getFrontendLevelType(level),
+        worldType: 'frontend'
+      };
+
+      // Remove loading indicator
+      loadingText.destroy();
+
+      // Transition to challenge scene with API-fetched challenge
+      this.scene.start('ChallengeScene', {
+        challenge: challenge,
+        worldType: this.worldType,
+        dynamicChallenge: dynamicChallenge
+      });
+    } catch (error) {
+      console.error('Failed to load challenge:', error);
+      loadingText.setText('Failed to load challenge. Click to retry.');
+      loadingText.setInteractive({ useHandCursor: true })
+        .on('pointerdown', async () => {
+          loadingText.destroy();
+          await this.enterFrontendLevel(level, name);
+        });
+    }
   }
 
   private getFrontendLevelType(level: number): string {
@@ -305,8 +369,8 @@ export class CareerWorldScene extends Phaser.Scene {
         levelAsset.setInteractive({ useHandCursor: true });
         
         // Add click handler to enter level
-        levelAsset.on('pointerdown', () => {
-          this.enterLevel(levelData.level, levelData.name);
+        levelAsset.on('pointerdown', async () => {
+          await this.enterLevel(levelData.level, levelData.name);
         });
 
         // Add level indicator background
@@ -364,23 +428,47 @@ export class CareerWorldScene extends Phaser.Scene {
     });
   }
 
-  private enterLevel(level: number, name: string) {
+  private async enterLevel(level: number, name: string) {
     console.log(`Entering Level ${level}: ${name}`);
     
-    // Create a challenge based on the level
-    const challenge = {
-      id: `backend-level-${level}`,
-      name: name,
-      difficulty: level,
-      type: this.getLevelType(level),
-      worldType: 'backend'
-    };
+    // Show loading indicator
+    const loadingText = this.add.text(640, 360, 'Loading challenge...', {
+      font: 'bold 24px monospace',
+      color: '#3498db'
+    }).setOrigin(0.5);
 
-    // Transition to challenge scene
-    this.scene.start('ChallengeScene', {
-      challenge: challenge,
-      worldType: this.worldType
-    });
+    try {
+      // Fetch dynamic challenge from API
+      const occupation = mapWorldTypeToOccupation(this.worldType);
+      const dynamicChallenge = await fetchDynamicChallenge(occupation, level);
+
+      // Create a challenge based on the level
+      const challenge = {
+        id: `backend-level-${level}`,
+        name: name,
+        difficulty: level,
+        type: this.getLevelType(level),
+        worldType: 'backend'
+      };
+
+      // Remove loading indicator
+      loadingText.destroy();
+
+      // Transition to challenge scene with API-fetched challenge
+      this.scene.start('ChallengeScene', {
+        challenge: challenge,
+        worldType: this.worldType,
+        dynamicChallenge: dynamicChallenge
+      });
+    } catch (error) {
+      console.error('Failed to load challenge:', error);
+      loadingText.setText('Failed to load challenge. Click to retry.');
+      loadingText.setInteractive({ useHandCursor: true })
+        .on('pointerdown', async () => {
+          loadingText.destroy();
+          await this.enterLevel(level, name);
+        });
+    }
   }
 
   private getLevelType(level: number): string {
@@ -394,47 +482,7 @@ export class CareerWorldScene extends Phaser.Scene {
     return levelTypes[level as keyof typeof levelTypes] || 'general';
   }
 
-  private createBackendAtmosphere() {
-    // Add subtle grid pattern for tech feel (only within movement bounds)
-    const grid = this.add.graphics();
-    grid.lineStyle(1, 0x34495e, 0.15);
-    
-    // Vertical lines (within movement bounds)
-    for (let x = 80; x < 1200; x += 40) {
-      grid.moveTo(x, 180);
-      grid.lineTo(x, 580);
-    }
-    
-    // Horizontal lines (within movement bounds)
-    for (let y = 180; y < 580; y += 40) {
-      grid.moveTo(80, y);
-      grid.lineTo(1200, y);
-    }
-    
-    grid.strokePath();
-  }
-
-  private createFrontendAtmosphere() {
-    // Add subtle creative design pattern for frontend feel (only within movement bounds)
-    const designGrid = this.add.graphics();
-    designGrid.lineStyle(1, 0x9b59b6, 0.12); // Purple tint for design studio
-    
-    // Create diagonal lines for a more creative feel (within movement bounds)
-    for (let x = 80; x < 1200; x += 60) {
-      designGrid.moveTo(x, 180);
-      designGrid.lineTo(x + 30, 580);
-    }
-    
-    for (let x = 110; x < 1200; x += 60) {
-      designGrid.moveTo(x, 180);
-      designGrid.lineTo(x - 30, 580);
-    }
-    
-    designGrid.strokePath();
-  }
-
   private createBackButton() {
-    this.add.rectangle(100, 50, 120, 40, 0x95a5a6)
     this.add.rectangle(100, 50, 120, 40, 0x95a5a6)
       .setInteractive({ useHandCursor: true })
       .on('pointerdown', () => {
@@ -468,11 +516,11 @@ export class CareerWorldScene extends Phaser.Scene {
       
       // Check for challenge station interactions
       this.physics.overlap(this.player.sprite, this.challengeStations, (_player, stationObj) => {
-        const anyStation: any = stationObj as any;
-        if (anyStation && typeof (anyStation as any).getData === 'function') {
-          const station = (anyStation as any).getData('challengeStation');
-          if (station && this.input.keyboard!.checkDown(this.input.keyboard!.addKey('SPACE'), 250)) {
-            station.startChallenge();
+        const station = stationObj as Phaser.GameObjects.GameObject & { getData?: (key: string) => ChallengeStation };
+        if (station && typeof station.getData === 'function') {
+          const challengeStation = station.getData('challengeStation');
+          if (challengeStation && this.input.keyboard!.checkDown(this.input.keyboard!.addKey('SPACE'), 250)) {
+            challengeStation.startChallenge();
           }
         }
       });
